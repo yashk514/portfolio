@@ -34,11 +34,18 @@ pipeline {
                 echo 'Deploying Portfolio...'
 
                 bat '''
-                    if not exist C:\\inetpub\\wwwroot mkdir C:\\inetpub\\wwwroot
+                    if not exist C:\\portfolio-deploy mkdir C:\\portfolio-deploy
 
-                    copy /Y index.html C:\\inetpub\\wwwroot\\
-                    copy /Y style.css C:\\inetpub\\wwwroot\\
+                    copy /Y index.html C:\\portfolio-deploy\\
+                    copy /Y style.css C:\\portfolio-deploy\\
                 '''
+            }
+        }
+
+        stage('Open Website') {
+            steps {
+                echo 'Opening Portfolio Website...'
+                bat 'start "" "C:\\portfolio-deploy\\index.html"'
             }
         }
     }

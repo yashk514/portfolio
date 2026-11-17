@@ -14,15 +14,18 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building Portfolio Website...'
-                sh 'ls -la'
+                bat 'dir'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Testing Portfolio Files...'
-                sh 'test -f index.html'
-                sh 'test -f style.css'
+
+                bat '''
+                    if not exist index.html exit /b 1
+                    if not exist style.css exit /b 1
+                '''
             }
         }
 
@@ -30,9 +33,11 @@ pipeline {
             steps {
                 echo 'Deploying Portfolio...'
 
-                sh '''
-                    sudo cp index.html /var/www/html/
-                    sudo cp style.css /var/www/html/
+                bat '''
+                    if not exist C:\\inetpub\\wwwroot mkdir C:\\inetpub\\wwwroot
+
+                    copy /Y index.html C:\\inetpub\\wwwroot\\
+                    copy /Y style.css C:\\inetpub\\wwwroot\\
                 '''
             }
         }
